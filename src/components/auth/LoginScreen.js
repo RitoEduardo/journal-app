@@ -1,12 +1,35 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom'
+import { useForm } from '../../hooks/useForm';
+import { login, starGoogleLogin, starLoginEmailPassword } from '../actions/auth';
 
 export const LoginScreen = () => {
+
+    const dispache = useDispatch();
+
+    const initialForm = {
+        email: '',
+        password: ''
+    };
+    
+    const [ { email, password }, handleInputChange ] = useForm( initialForm );
+
+    const handleLogin = (ev) => {
+        ev.preventDefault();
+        dispache( starLoginEmailPassword('12222','Eduardo García') );
+        // dispache( login('12222','Eduardo García') );
+    }
+
+    const handleGoogleLogin = () => {
+        dispache( starGoogleLogin() );
+    }
+
     return (
         <>
             <h3 className="auth__title">Login</h3>
 
-            <form>
+            <form onSubmit={handleLogin}>
 
                 <input 
                     type="text"
@@ -14,6 +37,8 @@ export const LoginScreen = () => {
                     name="email"
                     className="auth__input"
                     autoComplete="off"
+                    value={ email }
+                    onChange={ handleInputChange }
                 />
 
                 <input 
@@ -21,6 +46,8 @@ export const LoginScreen = () => {
                     placeholder="Password"
                     name="password"
                     className="auth__input"
+                    value={ password }
+                    onChange={ handleInputChange }
                 />
 
 
@@ -37,6 +64,7 @@ export const LoginScreen = () => {
 
                     <div 
                         className="google-btn"
+                        onClick={ handleGoogleLogin }
                     >
                         <div className="google-icon-wrapper">
                             <img className="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="google button" />
